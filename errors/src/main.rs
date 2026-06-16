@@ -100,13 +100,54 @@ fn main() {
 
 /*
  * ----- Return type on main() -----
- */
 
 use std::error::Error;
 use std::fs::File;
 
 fn main() -> Result<(), Box<dyn Error>> {
-    let greeting_file = File::open("hello.txt")?;
+    let greeting_file  = File::open("hello.txt")?;
 
     Ok(())
+}
+ */
+
+/*
+ * ----- Calling expect > Result -----
+
+fn main() {
+    use std::net::IpAddr;
+
+    let home: IpAddr = "127.0.0.1"
+        .parse()
+        .expect("Hardcoded IP address should be valid");
+}
+ */
+
+/*
+ * ----- Repeated error handling using custom type -----
+ */
+
+pub struct Guess {
+    value: i32,
+}
+
+impl Guess {
+    pub fn new(value: i32) -> Guess {
+        if value < 1 || value > 100 {
+            panic!("Guess value must be between 1 and 100, got {value}");
+        }
+
+        Guess { value }
+    }
+
+    pub fn value(&self) -> i32 {
+        self.value
+    }
+}
+
+fn main() { 
+    let working: Guess = Guess::new(50);
+    let value: i32 = working.value();
+    println!("Working guess: {value}");
+    let Broken: Guess = Guess::new(1010);
 }
